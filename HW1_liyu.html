@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
+        <style>
+            h1{
+                text-align:center;
+            }
+
+            input[type="text"].div2{
+                width:49%;
+                max-width:49%;
+                
+            }
+
+            input[type="text"]{
+                margin-left:auto;
+                margin-right:auto;
+                border-radius:10px;
+                width:100%;
+            }
+
+            input[type="button"].blue{
+                background-color:blue;
+                width:49%;
+                color:white;
+                border-radius:10px;
+            }
+
+            input[type="button"].green{
+                background-color:green;
+                width:49%;
+                color:white;
+                border-radius:10px;
+            }
+
+
+        </style>
+        <title>
+            Sign UP Page
+        </title>
+    </head>
+    <body>
+        <h1>Sign UP</h1>
+        <!-- <table>
+            <tr>
+                <td><input type="text" placeholder="First Name"></td>
+                <td><input type="text" placeholder="Last Name"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="text" placeholder="Mobile No."></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="text" placeholder="Email Address"></td>
+            </tr>
+            <tr>
+                <td><input type="text" placeholder="Password"></td>
+                <td><input type="text" placeholder="Confirm Password"></td>
+            </tr>
+        </table> -->
+        <div>
+            <input type="text" placeholder="First Name" class="div2">
+            <input type="text" placeholder="Last Name" class="div2">
+        </div>
+        <div>
+            <input type="text" placeholder="Mobile No.">
+        </div>
+        <div>
+            <input type="text" placeholder="Email Address">
+        </div>
+        <div>
+            <input type="text" placeholder="Password" class="div2">
+            <input type="text" placeholder="Confirm Password" class="div2">
+        </div>
+
+        <div>
+            <p>
+                <input type="checkbox" id="agree" name="agree" value="agree">
+                <label for="agree">I Agree</label>
+                By clicking Register, you agree to the Terms and Conditions set out by this site, including our Cookie Use.
+            </p>
+        </div>
+
+        <div>
+            <input type="button" value="Register" class="blue">
+            <input type="button" value="Sign In" class="green">
+        </div>
+
+    </body>
+</html>
