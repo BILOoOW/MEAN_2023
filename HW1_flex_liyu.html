@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <header>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
+        <style>
+            h1 {
+                text-align:center;
+            }
+            .flex-container {
+                display:flex;
+                background-color:white;
+                justify-content:space-evenly;
+                align-items:stretch;
+                width:100%;
+                flex-wrap:wrap;
+            }
+            div.flex-container{
+                flex:50%;
+            }
+            input[type="text"].two{
+                margin-left:auto;
+                margin-right:auto;
+                border-radius:10px;
+                width:49%;
+            }
+            input[type="text"].middle {
+                border-radius:10px;
+                width:100%;
+                margin-left:auto;
+                margin-right:auto;
+            }
+            input[type="button"].blue{
+                background-color:blue;
+                width:49%;
+                color:white;
+                border-radius:10px;
+                text-align:center;
+            }
+            input[type="button"].green{
+                background-color:green;
+                width:49%;
+                color:white;
+                border-radius:10px;
+                text-align:center;
+            }
+            .relative{
+                display:inline-block;
+                max-width:80%;
+                margin-left:300px;
+            }
+            span{
+                color:blue;
+            }
+            .button{
+                background-color:blue;
+                color:white;
+            }
+        </style>
+    </header>
+    <body>
+        <h1>Sign Up</h1>
+        <div class="flex-container">
+            <input type="text" class="two" placeholder="First Name">
+            <input type="text" class="two" placeholder="Last Name">
+        </div>
+        <div>
+            <input type="text" class="middle" placeholder="Mobile No.">
+        </div>
+        <div>
+            <input type="text" class="middle" placeholder="Email Address">
+        </div>
+        <div class="flex-container">
+            <input type="text" class="two" placeholder="Password">
+            <input type="text" class="two" placeholder="Confirm Password">
+        </div>
+
+
+        <div>
+            <input type="checkbox" id="agree" name="agree" value="agree">
+            <label for="agree">I Agree</label>
+            <p class="relative">
+                By clicking <button class="button">Register</button>, you agree to the<span>Terms and Conditions</span> set out by this site, including our Cookie Use.
+            </p>
+        </div>
+
+        <div>
+            <input type="button" value="Register" class="blue">
+            <input type="button" value="Sign In" class="green">
+        </div>
+    </body>   
+</html>

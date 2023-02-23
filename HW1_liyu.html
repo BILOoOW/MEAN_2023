@@ -10,7 +10,6 @@
 
             input[type="text"].div2{
                 width:49%;
-                max-width:49%;
                 
             }
 
@@ -26,6 +25,7 @@
                 width:49%;
                 color:white;
                 border-radius:10px;
+                text-align:left;
             }
 
             input[type="button"].green{
@@ -35,7 +35,11 @@
                 border-radius:10px;
             }
 
-
+            .relative{
+                display:inline-block;
+                max-width:80%;
+                margin-left:300px;
+            }
         </style>
         <title>
             Sign UP Page
@@ -43,22 +47,7 @@
     </head>
     <body>
         <h1>Sign UP</h1>
-        <!-- <table>
-            <tr>
-                <td><input type="text" placeholder="First Name"></td>
-                <td><input type="text" placeholder="Last Name"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="text" placeholder="Mobile No."></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="text" placeholder="Email Address"></td>
-            </tr>
-            <tr>
-                <td><input type="text" placeholder="Password"></td>
-                <td><input type="text" placeholder="Confirm Password"></td>
-            </tr>
-        </table> -->
+        
         <div>
             <input type="text" placeholder="First Name" class="div2">
             <input type="text" placeholder="Last Name" class="div2">
@@ -75,9 +64,9 @@
         </div>
 
         <div>
-            <p>
-                <input type="checkbox" id="agree" name="agree" value="agree">
-                <label for="agree">I Agree</label>
+            <input type="checkbox" id="agree" name="agree" value="agree">
+            <label for="agree">I Agree</label>
+            <p class="relative">
                 By clicking Register, you agree to the Terms and Conditions set out by this site, including our Cookie Use.
             </p>
         </div>
