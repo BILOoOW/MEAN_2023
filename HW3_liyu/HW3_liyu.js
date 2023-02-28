@@ -248,7 +248,69 @@ function generate_id(x){
 // Sample array: [1, 2, 3] and subset length is 2 
 // Expected output: [[2, 1], [3, 1], [3, 2]]
 function all_possible_combo(arr,x){
-    const ret = [];
-    ret.push(1); 
+    let allsubsets = [];
+    const subset = (curIdx, set) => {
+        if(curIdx >= arr.length){
+            allsubsets.push(set);
+            return;
+        }
+        subset(curIdx+1, [...set, arr[curIdx]]);
+        subset(curIdx+1, set);
+    }
+    subset(0,[])
+    return allsubsets.filter((input)=>{return input.length==x});
 }
-console.log(all_possible_combo([1,2,3],2))
+// console.log(all_possible_combo([1,2,3,4,5,6,7],3))
+
+// 22. Write a JavaScript function that accepts two arguments, a string and a letter and the function will count the number of occurrences of the specified letter within the string. 
+// Sample arguments: 'microsoft.com', 'o' 
+// Expected output: 3 
+function count_occur(str,letter){
+    let count = 0;
+    for(let i = 0; i < str.length; i++){
+        if(str.charAt(i) == letter) count += 1;
+    }
+    return count;
+}
+// console.log(count_occur("microsoft.com","o"));
+
+// 23. Write a JavaScript function to find the first not repeated character. 
+// Sample arguments: 'abacddbec' 
+// Expected output: 'e'
+function first_non_repeated(str){
+    for(let i = 0; i < str.length; i++){
+        let count = 0;
+        for(let j = 0; j < str.length; j++){
+            if(str.charAt(i) == str.charAt(j)) count ++;
+        }
+        if(count == 1){
+            return str.charAt(i)
+        }
+    }
+    return false;
+}
+// console.log(first_non_repeated("abacddbec"));
+
+// 24. Write a JavaScript function to apply Bubble Sort algorithm. 
+function bubble_sort(x){
+    let if_swap = true;
+    while(if_swap == true){
+        if_swap = false;
+        for(let i = 0; i < x.length; i++){
+            if(x[i] < x[i+1]){
+                let temp = x[i];
+                x[i] = x[i+1];
+                x[i+1] = temp;
+                if_swap = true;
+            }
+        }
+        if(!if_swap) break;
+    }
+    return x;
+}
+// console.log(bubble_sort([12, 345, 4, 546, 122, 84, 98, 64, 9, 1, 3223, 455, 23, 234, 213]))
+
+// 25. Write a JavaScript function that accept a list of country names as input and returns the longest country name as output. 
+// Sample function: Longest_Country_Name(["Australia", "Germany", "United States of America"])
+// Expected output: "United States of America"
+
