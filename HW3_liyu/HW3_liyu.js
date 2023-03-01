@@ -313,4 +313,64 @@ function bubble_sort(x){
 // 25. Write a JavaScript function that accept a list of country names as input and returns the longest country name as output. 
 // Sample function: Longest_Country_Name(["Australia", "Germany", "United States of America"])
 // Expected output: "United States of America"
+function longest_Country_Name(country_names){
+    let ret = "";
+    for(let i = 0; i < country_names.length; i++){
+        if(country_names[i].length > ret.length) ret = country_names[i];
+    }
+    return ret;
+}
+// console.log(longest_Country_Name(["Australia", "Germany", "United States of America"]))
 
+// 26. Write a JavaScript function to find longest substring in a given a string without repeating characters.
+function longest_substring(str){
+    let ret = ""
+    for(let i = 0; i < str.length; i++){
+        let curStrSet = new Set();
+        for(let j = i; j < str.length; j++){
+            if(curStrSet.has(str.charAt(j))){
+                break;
+            }
+            else{
+                curStrSet.add(str.charAt(j));
+            }
+        }
+        if([...curStrSet].length > ret.length){
+            ret = [...curStrSet].join('');
+        }
+    }
+    return ret;
+}
+// console.log(longest_substring('Hello'))
+
+// 27. Write a JavaScript function that returns the longest palindrome in a given string. 
+// Note: According to Wikipedia "In computer science, the longest palindromic substring or longest symmetric factor problem is the problem of finding a maximum-length contiguous substring of a given string that is also a palindrome. For example, the longest palindromic substring of "bananas" is "anana". The longest palindromic substring is not guaranteed to be unique; for example, in the string "abracadabra", there is no palindromic substring with length greater than three, but there are two palindromic substrings with length three, namely, "aca" and "ada".
+// In some applications it may be necessary to return all maximal palindromic substrings (that is, all substrings that are themselves palindromes and cannot be extended to larger palindromic substrings) rather than returning only one substring or returning the maximum length of a palindromic substring.
+function longest_palindrome(str){
+    let longest_palindrome = "";
+    for(let i = 0; i < str.length; i++){
+        for(let j = 0; j < str.length; j++){
+            if(str.substring(i,j+1) == str.substring(i,j+1).split("").reverse().join("") && str.substring(i,j+1).length > longest_palindrome.length){
+                longest_palindrome = str.substring(i,j+1)
+            }
+        }
+    }
+    return longest_palindrome;
+}
+// console.log(longest_palindrome("abracadabra"))
+
+// 28. Write a JavaScript program to pass a 'JavaScript function' as parameter. 
+function person(name, callback){
+    console.log('My name is ', name);
+    callback();
+}
+function doSomething(){
+    console.log("I am studying");
+}
+// console.log(person("BIL", doSomething));
+
+// 29. Write a JavaScript function to get the function name.
+function funcname(){
+    console.log(arguments.callee.name);
+}
+// funcname();
