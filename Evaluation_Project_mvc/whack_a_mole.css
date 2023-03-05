@@ -20,6 +20,7 @@
     height:200px;
     width:200px;
     border-radius:50%;
+    position: relative;
     /* visibility: hidden; */
 }
 
@@ -34,4 +35,12 @@
     width:200px;
     height:200px;
     visibility: hidden;
+    position:absolute;
+}
+
+.snake{
+    width:200px;
+    height:200px;
+    visibility: hidden;
+    position:absolute;
 }
