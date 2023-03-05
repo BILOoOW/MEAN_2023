@@ -1,6 +1,5 @@
 const Api = (() => {
-    holes = new Array();
-    // console.log(holes);
+    const holes = new Array();
     for(let i = 0; i < 12; i++){
         holes.push({
             id:i.toString(),
@@ -13,103 +12,131 @@ const Api = (() => {
 const View = (() => {
     const domSelector = {
         header: document.querySelector("#header"),
+        start_game: document.querySelector('#start_game'),
+        score_counter: document.querySelector('#score_counter'),
         game_board: document.querySelector("#game_board"),
         timer_count_down: document.querySelector("#timer_count_down"),
         holes: document.querySelector("#circle"),
         moles: document.getElementsByClassName("mole")
     }
-    const createTemp = (dataArr,moles) => {
-        // temp = ""
-        // for (let item of dataArr) {
-        //     if(item.if_have_mole){
-        //         moles
-        //     }
-        // }
-        // return temp
-    }
+    
 
-    const render = (holes) => {
+    const render = (holes, score_counter, timer_counter) => {
         
         for(let hole of holes){
             if(hole.if_have_mole == true){
-                // console.log("inside render")
-                console.log("#"+hole.id);
-                console.log(document.getElementById('#'+hole.id))
                 document.getElementById(hole.id).style.visibility = "visible";
+            }else{
+                document.getElementById(hole.id).style.visibility = "hidden";
             }
+            document.querySelector('#score_counter').innerHTML = score_counter;
+            document.querySelector("#timer_count_down").innerHTML = timer_counter;
         }
     }
 
-    console.log(domSelector);
     return {
         domSelector,
-        createTemp,
         render
     }
 })()
 
 const Model = ((api, view)=>{
     const holes = [...api];
-    const {domSelector, createTemp, render} = view;
-    // console.log(holes);
+    const {domSelector, render} = view;
     class state_Game_Board {
         constructor() {
-            this._game_board = []
+            this._holes = [];
+            this._score_counter = 0;
+            this._timer_counter = 30;
         }
 
-        get game_board() {
-            return this._game_board
+        get holes() {
+            return this._holes;
         }
 
-        set game_board(new_game_board) {
-            this._game_board = new_game_board
-            // const temp = createTemp(this._game_board)
-            // render(domSelector.game_board, temp)
+        get score_counter() {
+            return this._score_counter;
         }
+
+        get timer_counter() {
+            return this._timer_counter;
+        }
+
+        set holes(new_holes){
+            this._holes = new_holes;
+        }
+
+        set score_counter(new_score_counter) {
+            this._score_counter = new_score_counter;
+        }
+
+        set timer_counter(new_timer_counter) {
+            this._timer_counter = new_timer_counter;
+        }
+
     }
     return {
+        state_Game_Board,
         holes,
-        domSelector,
-        createTemp,
-        render
     }
 })(Api, View)
 
 
 
 const Controller = ((view, model) => {
-    const {holes, domSelector, createTemp, render} = Model;
-    // render(holes);
-    let timer = 5;
+    const {state_Game_Board, holes} = model;
+    const {domSelector, render} = view;
+
+    const game_state = new state_Game_Board();
+    game_state.holes = holes;
+    game_state.score_counter = 0;
+    game_state.timer_counter = 30;
+
+    // console.log(game_state);
+
+    let timer = 30;
     setTimer = () => {
         return setInterval(() => {
+            // console.log(timer);
             if(timer > 0){
                 let random_num = Math.floor(Math.random()*11);
-                if(holes.filter((a)=>{return a.if_have_mole == true}).length < 3){
-                    holes[random_num].if_have_mole = true;
-                    render(holes);
+                if(game_state.holes.filter((a)=>{return a.if_have_mole == true}).length < 3){
+                    game_state.holes[random_num].if_have_mole = true;
+                    // console.log(game_state);
                 }
                 
                 timer --;
+                game_state.timer_counter = timer;
+                render(game_state.holes, game_state.score_counter, game_state.timer_counter);
             }else{
                 clearInterval(Intervaln);
+                alert("Time is Over!");
             }
         }, 1000)
     }
     
+    
 
 
-    Intervaln = setTimer();
-    Intervaln();
-    console.log("finished");
-    console.log("here")
-    console.log(domSelector.moles);
-    domSelector.holes.addEventListener('click', (event)=>{
-        console.log(event.target.id);
-        // if(holes[+event.target.id].if_have_mole==true){
-        //     holes[+event.target.id].if_have_mole = false;
-        //     render(holes);
-        // }
+    for(let i = 0; i < domSelector.moles.length; i++){
+        domSelector.moles[i].addEventListener('click', (event)=>{
+            if(game_state.holes[+event.target.id].if_have_mole==true){
+                game_state.holes[+event.target.id].if_have_mole = false;
+                game_state.score_counter ++;
+            }
+            render(game_state.holes, game_state.score_counter, game_state.timer_counter);
+        })
+    }
+    
+    domSelector.start_game.addEventListener('click', ()=>{
+        for(let i = 0; i < 12; i++){
+            game_state.holes[i].if_have_mole = false;
+        }
+        game_state.score_counter = 0;
+        game_state.timer_counter = 30;
+        timer = 30;
+        render(game_state.holes, game_state.score_counter, game_state.timer_counter);
+        Intervaln = setTimer();
     })
 
 
