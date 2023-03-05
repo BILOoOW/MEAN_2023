@@ -12,31 +12,23 @@ const Api = (() => {
 
 const View = (() => {
     const domSelector = {
-        header: document.querySelector("#header"),
         start_game: document.querySelector('#start_game'),
         score_counter: document.querySelector('#score_counter'),
-        game_board: document.querySelector("#game_board"),
         timer_count_down: document.querySelector("#timer_count_down"),
-        holes: document.querySelector("#circle"),
         moles: document.getElementsByClassName("mole"),
         snakes: document.getElementsByClassName("snake")
     }
     
 
     const render = (holes, score_counter, timer_counter) => {
-        
         for(let hole of holes){
-            // console.log(hole);
             if(hole.if_have_mole == true){
                 document.getElementById(hole.id).style.visibility = "visible";
             }else{
                 document.getElementById(hole.id).style.visibility = "hidden";
             }
-
             if(hole.if_have_snake == true){
-                // console.log(12+ +hole.id);
                 document.getElementById(12+ +hole.id).style.visibility = "visible";
-                // document.getElementById(hole.id).style.visibility = "hidden";
             }else{
                 document.getElementById(12+ +hole.id).style.visibility = "hidden";
             }
@@ -45,21 +37,27 @@ const View = (() => {
             document.querySelector("#timer_count_down").innerHTML = timer_counter;
         }
     }
-
     return {
         domSelector,
         render
     }
 })()
 
-const Model = ((api, view)=>{
+const Model = ((api)=>{
     const holes = [...api];
-    const {domSelector, render} = view;
     class state_Game_Board {
         constructor() {
-            this._holes = [];
+            const holes = new Array();
+            for(let i = 0; i < 12; i++){
+                holes.push({id:i.toString(),
+                            if_have_mole:false,
+                            if_have_snake:false
+                            })
+            }
+            this._holes = holes;
             this._score_counter = 0;
             this._timer_counter = 30;
+            this._game_is_on = false;
         }
 
         get holes() {
@@ -74,6 +72,10 @@ const Model = ((api, view)=>{
             return this._timer_counter;
         }
 
+        get game_is_on(){
+            return this._game_is_on;
+        }
+
         set holes(new_holes){
             this._holes = new_holes;
         }
@@ -86,12 +88,16 @@ const Model = ((api, view)=>{
             this._timer_counter = new_timer_counter;
         }
 
+        set game_is_on(status){
+            this._game_is_on = status; 
+        }
+
     }
     return {
         state_Game_Board,
         holes,
     }
-})(Api, View)
+})(Api)
 
 
 
@@ -99,32 +105,30 @@ const Controller = ((view, model) => {
     const {state_Game_Board, holes} = model;
     const {domSelector, render} = view;
 
-    const game_state = new state_Game_Board();
+    let game_state = new state_Game_Board();
     game_state.holes = holes;
-    game_state.score_counter = 0;
-    game_state.timer_counter = 30;
 
-    // console.log(game_state);
 
     let timer = game_state.timer_counter;
-    
-
     setTimer = () => {
         return setInterval(() => {
-            // console.log(timer);
             if(timer > 0){
                 let random_num = Math.floor(Math.random()*11);
                 if(game_state.holes.filter((a)=>{return a.if_have_mole == true}).length < 3){
                     game_state.holes[random_num].if_have_mole = true;
-                    // console.log(game_state);
                 }
-                
                 timer --;
+                snake_timer --;
                 game_state.timer_counter = timer;
                 render(game_state.holes, game_state.score_counter, game_state.timer_counter);
             }else{
                 clearInterval(Intervaln);
-                alert("Time is Over!");
+                game_state = new state_Game_Board();
+                console.log(game_state);
+                
+                render(game_state.holes, game_state.score_counter, game_state.timer_counter);
+                alert("Time is Over");
+                
             }
         }, 1000)
     }
@@ -139,13 +143,9 @@ const Controller = ((view, model) => {
                     game_state.holes[random_num].if_have_snake = true;
                     
                 }else{
-                    // console.log(game_state.holes.findIndex((a)=>{return a.if_have_snake == true}))
                     game_state.holes[game_state.holes.findIndex((a)=>{return a.if_have_snake == true})].if_have_snake = false;
                     game_state.holes[random_num].if_have_snake = true;
                 }
-                // console.log(game_state);
-                snake_timer = snake_timer - 2;
-                render(game_state.holes, game_state.score_counter, game_state.timer_counter);
             }else{
                 clearInterval(Intervalm);
             }
@@ -168,34 +168,36 @@ const Controller = ((view, model) => {
     for(let i = 0; i< domSelector.snakes.length; i++){
         domSelector.snakes[i].addEventListener('click', (event)=>{
             console.log(+event.target.id-12);
-            if(game_state.holes[+event.target.id-12].if_have_snake==true){
-                for(let i = 0; i < 12; i++){
-                    game_state.holes[i].if_have_snake = true;
-                }
-                game_state.score_counter = 0;
-                game_state.timer_counter = 30;
-                timer = 0;
-                snake_timer = 0;
-                
-                render(game_state.holes, game_state.score_counter, game_state.timer_counter);
+            console.log(game_state);
+            game_state.timer_counter = 0;
+            timer = 0;
+            snake_timer = 0;
+            game_state.score_counter = 0;
+            game_state.game_is_on = false;
+            for(let i = 0; i < 12; i++){
+                game_state.holes[i].if_have_snake = true;
             }
+            render(game_state.holes, game_state.score_counter, game_state.timer_counter);
         })
     }
 
 
 
     domSelector.start_game.addEventListener('click', ()=>{
-        for(let i = 0; i < 12; i++){
-            game_state.holes[i].if_have_mole = false;
-            game_state.holes[i].if_have_snake = false;
+        if(game_state.game_is_on == false){
+            game_state.game_is_on = true;
+            for(let i = 0; i < 12; i++){
+                game_state.holes[i].if_have_mole = false;
+                game_state.holes[i].if_have_snake = false;
+            }
+            game_state.score_counter = 0;
+            game_state.timer_counter = 30;
+            timer = 30;
+            snake_timer = 30;
+            render(game_state.holes, game_state.score_counter, game_state.timer_counter);
+            Intervaln = setTimer();
+            Intervalm = setTimer_snake();
         }
-        game_state.score_counter = 0;
-        game_state.timer_counter = 30;
-        timer = 30;
-        snake_timer = 30;
-        render(game_state.holes, game_state.score_counter, game_state.timer_counter);
-        Intervaln = setTimer();
-        Intervalm = setTimer_snake();
     })
 
 
