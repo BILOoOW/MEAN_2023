@@ -4,7 +4,8 @@ const Api = (() => {
         holes.push({
             id:i.toString(),
             if_have_mole:false,
-            if_have_snake:false
+            if_have_snake:false,
+            mole_existing_time:0
         })
     }
     return holes;
@@ -116,6 +117,21 @@ const Controller = ((view, model) => {
                 let random_num = Math.floor(Math.random()*11);
                 if(game_state.holes.filter((a)=>{return a.if_have_mole == true}).length < 3){
                     game_state.holes[random_num].if_have_mole = true;
+                    game_state.holes[random_num].mole_existing_time = 0;
+                    let existing_moles = game_state.holes.filter((a)=>{return a.if_have_mole == true});
+                    let idxes = [];
+                    for(let i of existing_moles) idxes.push(+i.id);
+                    for(let idx of idxes){
+                        game_state.holes[idx].mole_existing_time ++;
+                    }
+                }else{
+                    let existing_moles = game_state.holes.filter((a)=>{return a.mole_existing_time==2});
+                    let idxes = [];
+                    for(let i of existing_moles) idxes.push(+i.id);
+                    for(let idx of idxes){
+                        game_state.holes[idx].if_have_mole = false;
+                        game_state.holes[idx].mole_existing_time = 0;
+                    }   
                 }
                 timer --;
                 snake_timer --;
